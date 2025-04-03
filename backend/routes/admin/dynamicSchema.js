@@ -1,6 +1,7 @@
 const router=require('express').Router();
-const {mapCollection,User}=require("../../db/Admin/schema");
-const UserVerification=require("../middlewares/login_middleware");
+const {mapCollection,User}=require("../../../db/Admin/schema");
+const UserVerification=require("../../middlewares/login_middleware");
+const secret=require("../../middlewares/secret");
 const  bcrypt = require("bcrypt");
 const salt = 7;
 // const app=express();
@@ -25,7 +26,7 @@ const inferSchemaFromCollection = async (collectionName) => {
   };
 
 
-router.post("/community/user",abcd,(req,res)=>{
+router.post("/community/user",UserVerification,(req,res)=>{
     const CollectionId=req.body;
     const getCollectionName=mapCollection.find({key:CollectionId});
     console.log(getCollectionName.collectionName);
@@ -33,21 +34,21 @@ router.post("/community/user",abcd,(req,res)=>{
     return res.json({msg:"done"});
 })  
 
-router.post("/",UserVerification,async(req,res)=>{
+router.post("/login",async(req,res)=>{
     const {email,password}  = req.body;
     const newUser = await User.findOne({ email });
     try {
-        if (!user) {
+        if (!newUser) {
             return res.status(404).json({ msg: "User not found" });
         }
     
         // Verify the password
-        const isPasswordValid = await bcrypt.compare(password, user.password);
+        const isPasswordValid = await bcrypt.compare(password, newUser.password);
         if (!isPasswordValid) {
             return res.status(401).json({ msg: "Invalid password" });
         }
         const token = jwt.sign(
-            { id: newUser.id, email: newUser.email, name: newUser.username },
+            { id: newUser._id, email: newUser.email, name: newUser.username },
             secret,
             { expiresIn: 7200 }
         );
@@ -60,12 +61,13 @@ router.post("/",UserVerification,async(req,res)=>{
 })
 
 
-router.post("/register",UserVerification,async(req,res)=>{
+router.post("/register",async(req,res)=>{
     const {username,password,email} = req.body;
     
     const salted = await bcrypt.genSalt(salt);
     const hashed = await bcrypt.hash(password, salted);
-    const newUser = new User({ username, password, email });
+    const newUser = new User({ username, password: hashed, email });
+
 
     await newUser.save();
     
