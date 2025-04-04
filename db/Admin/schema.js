@@ -24,7 +24,7 @@ const sanitizeCollectionName = (name) => {
 };
 
 // Function to create dynamic collections
-const createDynamicCollection = async (collectionName, fieldsArray) => {
+const createDynamicCollection = async (admin_id, collectionName, fieldsArray) => {
     try {
         // Sanitize the collection name
         collectionName = sanitizeCollectionName(collectionName);
@@ -33,39 +33,75 @@ const createDynamicCollection = async (collectionName, fieldsArray) => {
             user_id: { type: mongoose.Schema.Types.ObjectId, required: true },
         };
 
-        // Define fields based on provided types
+        // This will hold the sample data to be inserted
+        const sampleData = {};
+
+        // Define schema fields and prepare sample data
         fieldsArray.forEach(field => {
             let fieldType = {};
             switch (field.type1) {
-                case "String": fieldType = { type: String, required: true }; break;
-                case "Number": fieldType = { type: Number, required: true }; break;
-                case "Boolean": fieldType = { type: Boolean, required: true }; break;
-                case "Date": fieldType = { type: Date, required: true }; break;
-                default: fieldType = { type: String, required: true }; // Default to String
+                case "String":
+                    fieldType = { type: String, required: true };
+                    sampleData[field.data] = String(field.sample); // ensure it's a string
+                    break;
+                case "Number":
+                    fieldType = { type: Number, required: true };
+                    sampleData[field.data] = Number(field.sample);
+                    break;
+                case "Boolean":
+                    fieldType = { type: Boolean, required: true };
+                    sampleData[field.data] = Boolean(field.sample);
+                    break;
+                case "Date":
+                    fieldType = { type: Date, required: true };
+                    sampleData[field.data] = new Date(field.sample);
+                    break;
+                default:
+                    fieldType = { type: String, required: true };
+                    sampleData[field.data] = String(field.sample);
             }
             schemaFields[field.data] = fieldType;
         });
 
+        // Log what's happening
         console.log("✅ Final Collection Name:", collectionName);
         console.log("✅ Schema Fields:", schemaFields);
+        console.log("✅ Sample Data:", sampleData);
 
-        // Create the new collection schema
+        // Create the dynamic schema and model
         const dynamicSchema = new mongoose.Schema(schemaFields);
-        mongoose.model(collectionName, dynamicSchema);
+        const DynamicModel = mongoose.model(collectionName, dynamicSchema);
 
-        return `Collection '${collectionName}' created successfully`;
+        // Add the user_id
+        sampleData.user_id = admin_id;
+
+        // Insert sample data
+        const inserted = await DynamicModel.create(sampleData);
+        console.log("✅ Inserted Document:", inserted);
+
+        return `Collection '${collectionName}' created and sample data inserted.`;
     } catch (error) {
-        console.error("❌ Error creating dynamic collection:", error);
+        console.error("❌ Error creating dynamic collection or inserting data:", error);
         throw new Error(error.message);
     }
 };
+
+
 
 // Mapped Collection Schema (to track dynamic collections)
 const mapCollectionSchema = new mongoose.Schema({
     collectionName: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    key: { type: String, required: true }
-});
+    key: { type: String, required: true },
+    field: [
+      {
+        data: { type: String, required: true },
+        type1: { type: String, required: true }, // You could validate type1 further if needed
+        sample: { type: mongoose.Schema.Types.Mixed, required: true } // Mixed allows String or Number
+      }
+    ]
+  });
+  
 
 // Mongoose Models
 const MapCollection = mongoose.model("MappedCollection", mapCollectionSchema);

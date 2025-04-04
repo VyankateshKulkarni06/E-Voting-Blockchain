@@ -2,15 +2,16 @@ const bcrypt = require('bcrypt');
 const router = require('express').Router();
 const { MapCollection, createDynamicCollection } = require("../../../db/Admin/schema");
 const generateKeys = require("../../controllers/generateKey");
+const userVerification=require("../../middlewares/login_middleware");
 
-router.post("/", async (req, res) => {
+router.post("/",userVerification, async (req, res) => {
     try {
         const community_name = req.body.cname;
         const community_pass = req.body.password;
         const fieldsArray = req.body.field;
-
+        const admin_id=req.user.id;
         // Create the dynamic collection
-        const ans = await createDynamicCollection(community_name, fieldsArray);
+        const ans = await createDynamicCollection(admin_id,community_name, fieldsArray);
         const key = generateKeys(ans);
 
         // **Hash the password before storing it**
@@ -21,7 +22,8 @@ router.post("/", async (req, res) => {
         const newCollection = new MapCollection({
             collectionName: community_name,
             password: hashedPassword, // Store hashed password
-            key: key
+            key: key,
+            field:fieldsArray, 
         });
 
         await newCollection.save();
