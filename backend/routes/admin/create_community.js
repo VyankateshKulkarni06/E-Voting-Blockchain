@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const router = require('express').Router();
-const { MapCollection, createDynamicCollection } = require("../../../db/Admin/schema");
+const { MapCollection, User,createDynamicCollection } = require("../../../db/Admin/schema");
 const generateKeys = require("../../controllers/generateKey");
 const userVerification=require("../../middlewares/login_middleware");
 
@@ -24,9 +24,22 @@ router.post("/",userVerification, async (req, res) => {
             password: hashedPassword, // Store hashed password
             key: key,
             field:fieldsArray, 
-        });
+        }); 
 
         await newCollection.save();
+
+        await User.updateOne(
+            { _id: admin_id },
+            {
+              $push: {
+                "communities.admin": {
+                  community_key: key
+                }
+              }
+            }
+          );
+        
+
         return res.json({ msg: "Collection created and key generated", ans: ans, key: key });
 
     } catch (error) {

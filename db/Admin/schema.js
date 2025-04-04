@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const generateKey = require("../../backend/controllers/generateKey");
+
 
 // Connect to MongoDB
 mongoose.connect("mongodb://localhost:27017/Voting", {
@@ -11,13 +10,20 @@ mongoose.connect("mongodb://localhost:27017/Voting", {
 .catch((err) => console.error("❌ Error connecting to MongoDB:", err));
 
 // User Schema
-const userSchema = new mongoose.Schema({
+const communitySubSchema = new mongoose.Schema({
+    community_key: { type: String }
+  }, { _id: true }); // allow _id for default Mongo behavior
+  
+  const userSchema = new mongoose.Schema({
     username: { type: String, required: true },
     email: { type: String, unique: true, required: true },
-    password: { type: String, required: true }
-});
+    password: { type: String, required: true },
+    communities: {
+      admin: [communitySubSchema],
+      user: [communitySubSchema]
+    }
+  });
 
-// Function to sanitize collection names
 const sanitizeCollectionName = (name) => {
     if (!name || typeof name !== "string") throw new Error("Invalid collection name");
     return name.trim().replace(/\s+/g, "_").replace(/[^a-zA-Z0-9_]/g, "");
@@ -30,7 +36,7 @@ const createDynamicCollection = async (admin_id, collectionName, fieldsArray) =>
         collectionName = sanitizeCollectionName(collectionName);
 
         let schemaFields = {
-            user_id: { type: mongoose.Schema.Types.ObjectId, required: true },
+            user_id: { type: mongoose.Schema.Types.ObjectId, ref:"User",required: true },
         };
 
         // This will hold the sample data to be inserted

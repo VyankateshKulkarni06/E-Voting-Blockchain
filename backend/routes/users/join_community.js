@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const mongoose = require("mongoose");
 const router = require("express").Router();
-const { MapCollection } = require("../../../db/Admin/schema");
+const { MapCollection ,User} = require("../../../db/Admin/schema");
 const userVerification = require("../../middlewares/login_middleware");
 
 
@@ -56,10 +56,24 @@ router.post("/",userVerification,async(req,res)=>{
             sampleData[field[i].data]=data[i];
         }
         console.log(sampleData);
+        const admin_id=req.user.id;
         const s=getCollection.collectionName.toLowerCase()+"s";
 
         console.log("collection name:",s);
         await mongoose.connection.collection(s).insertOne(sampleData);
+
+        await User.updateOne(
+            { _id: admin_id },
+            {
+              $push: {
+                "communities.user": {
+                  community_key: CollectionId
+                }
+              }
+            }
+          );
+          
+        
 
         return res.json({ msg: "Joined community successfully"});
 })
