@@ -23,7 +23,7 @@ const inferSchemaFromCollection = async (collectionName) => {
     }
 };
 
-router.post("/",userVerification, async (req, res) => {
+router.post("/test",userVerification, async (req, res) => {
     try {
         const { CollectionId, password ,data} = req.body;
         const getCollection = await MapCollection.findOne({ key: CollectionId });
@@ -36,6 +36,19 @@ router.post("/",userVerification, async (req, res) => {
             return res.status(401).json({ msg: "Incorrect password" });
         }
 
+        return res.json({ isVerified:true });
+    } catch (error) {
+        console.error("Error:", error);
+        return res.status(500).json({ isVerified:false });
+    }
+});
+
+router.post("/",userVerification,async(req,res)=>{
+        const {CollectionId,data} = req.body;
+
+        console.log(CollectionId);
+        const getCollection = await MapCollection.findOne({ key: CollectionId });
+        
         console.log(getCollection.field);
         const sampleData={user_id:req.user.id};
         const field = getCollection.field;
@@ -47,13 +60,8 @@ router.post("/",userVerification, async (req, res) => {
 
         console.log("collection name:",s);
         await mongoose.connection.collection(s).insertOne(sampleData);
-        const schemaData = await inferSchemaFromCollection(s);
 
-        return res.json({ msg: "Joined community successfully", schema: schemaData });
-    } catch (error) {
-        console.error("Error:", error);
-        return res.status(500).json({ msg: "Internal Server Error", error: error.message });
-    }
-});
+        return res.json({ msg: "Joined community successfully"});
+})
 
 module.exports = router;
