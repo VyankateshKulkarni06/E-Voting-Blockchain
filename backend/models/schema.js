@@ -93,48 +93,51 @@ const createDynamicCollection = async (admin_id, collectionName, fieldsArray) =>
 };
 
 const electionSchema = new mongoose.Schema({
-    electionName : {
-        type : String,
-
+    electionName: {
+      type: String,
     },
-    community_key:{
-        type:String, required:true,
+    community_key: {
+      type: String,
+      required: true,
     },
-    status : {
-        type : String ,enum:["upcoming", "active","over"],
-        default: "upcoming"
+    status: {
+      type: String,
+      enum: ["upcoming", "active", "over"],
+      default: "upcoming",
     },
     candidate_id: [
-        {
-            type : mongoose.Schema.Types.ObjectId,
-            ref : "User",
-            required:true
-        }
-        
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+      },
     ],
-    startDate : {
-        type : Date
+    startDate: {
+      type: Date,
     },
-    endDate : {
-        type : Date
+    endDate: {
+      type: Date,
     },
-    description : {
-        type : String
+    description: {
+      type: String,
     },
-    applicableFields : [
-        {
-            field : {type : String, required : true},
-            value : {type : String, required : true},
-        }
+    applicableFields: [
+      {
+        field: { type: String, required: true },
+        value: { type: String, required: true },
+      },
     ],
-    results:[
+    results: {
+      type: [
         {
-            candidate_id : {type : mongoose.Schema.Types.ObjectId,required:true},
-            votes : {type : Number}
-        }
-        
-    ]
-});
+          candidate_id: { type: mongoose.Schema.Types.ObjectId },
+          votes: { type: Number },
+        },
+      ],
+      default: [],
+    },
+  });
+  
 
 // Mapped Collection Schema (to track dynamic collections)
 const mapCollectionSchema = new mongoose.Schema({
