@@ -14,7 +14,7 @@ const communitySubSchema = new mongoose.Schema({
     community_key: { type: String }
   }, { _id: true }); // allow _id for default Mongo behavior
   
-  const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     username: { type: String, required: true },
     email: { type: String, unique: true, required: true },
     password: { type: String, required: true },
@@ -22,7 +22,7 @@ const communitySubSchema = new mongoose.Schema({
       admin: [communitySubSchema],
       user: [communitySubSchema]
     }
-  });
+});
 
 const sanitizeCollectionName = (name) => {
     if (!name || typeof name !== "string") throw new Error("Invalid collection name");
@@ -148,7 +148,7 @@ const mapCollectionSchema = new mongoose.Schema({
         sample: { type: mongoose.Schema.Types.Mixed, required: true } // Mixed allows String or Number
       }
     ]
-  });
+});
   
 
 // Mongoose Models
