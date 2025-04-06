@@ -5,23 +5,6 @@ const { MapCollection ,User} = require("../../models/schema");
 const userVerification = require("../../middlewares/login_middleware");
 
 
-const inferSchemaFromCollection = async (collectionName) => {
-    try {
-        const db = mongoose.connection.db;
-        const collection = db.collection(collectionName);
-        const sampleDoc = await collection.findOne();
-        if (!sampleDoc) {
-            console.log('No documents found in the collection.');
-            return null;
-        }
-
-        console.log('Inferred Schema from Sample Document:', sampleDoc);
-        return sampleDoc;
-    } catch (error) {
-        console.error('Error fetching schema:', error);
-        return null;
-    }
-};
 
 router.post("/test",userVerification, async (req, res) => {
     try {

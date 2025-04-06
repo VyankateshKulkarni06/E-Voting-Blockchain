@@ -1,9 +1,8 @@
-const bcrypt = require('bcrypt');
 const router = require('express').Router();
-const {Election} = require("../../models/schema");
+const {Election,MapCollection,User} = require("../../models/schema");
 const userVerification=require("../../middlewares/login_middleware");
 
-router.post("/",userVerification,async(req,res)=>{
+router.post("/test",userVerification,async(req,res)=>{
     try{
         const {
         electionName,
@@ -29,12 +28,26 @@ router.post("/",userVerification,async(req,res)=>{
             results
         });
 
+        const mapCollection = await MapCollection.findOne({key: community_key});
+        const collectionName=mapCollection.collectionName.toLowerCase()+"s";
+        const db = mongoose.connection.db;
+        const collection = db.collection(collectionName);
+        const query = {};
+            applicableFields.forEach(({ field, value }) => {
+            query[field] = value;
+        });
+
+        const voters=await collection.find(query).toArray();
+        const cost_elections=voters.length*0.1;
+
+
         const savedElection = await newElection.save();
-        res.status(201).json({ message: "Election created successfully", data: savedElection});
+        res.status(201).json({ message: "Election created successfully", electionName:savedElection.electionName,cost:cost_elections,candidates:candidate_id,voter_array:voters});
     }
     catch(e){
         return res.status(400).json({msg:e.message});
     }
 });
+
 
 module.exports = router;
