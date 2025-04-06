@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const router = require('express').Router();
-const { MapCollection, User,createDynamicCollection } = require("../../../db/Admin/schema");
+const { MapCollection, User,createDynamicCollection } = require("../../models/schema");
 const generateKeys = require("../../controllers/generateKey");
 const userVerification=require("../../middlewares/login_middleware");
 

@@ -1,7 +1,7 @@
 const express=require("express");
 
 const app=express();
-const adminSchema=require("../db/Admin/schema");
+const adminSchema=require("./models/schema");
 const login=require("../backend/routes/users/users_login");
 const CommunityCreation=require("../backend/routes/admin/create_community");
 const joinCommunity=require("../backend/routes/users/join_community");

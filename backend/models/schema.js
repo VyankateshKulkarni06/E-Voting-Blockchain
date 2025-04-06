@@ -92,7 +92,49 @@ const createDynamicCollection = async (admin_id, collectionName, fieldsArray) =>
     }
 };
 
+const electionSchema = new mongoose.Schema({
+    electionName : {
+        type : String,
 
+    },
+    community_key:{
+        type:String, required:true,
+    },
+    status : {
+        type : String ,enum:["upcoming", "active","over"],
+        default: "upcoming"
+    },
+    candidate_id: [
+        {
+            type : mongoose.Schema.Types.ObjectId,
+            ref : "User",
+            required:true
+        }
+        
+    ],
+    startDate : {
+        type : Date
+    },
+    endDate : {
+        type : Date
+    },
+    description : {
+        type : String
+    },
+    applicableFields : [
+        {
+            field : {type : String, required : true},
+            value : {type : String, required : true},
+        }
+    ],
+    results:[
+        {
+            candidate_id : {type : mongoose.Schema.Types.ObjectId,required:true},
+            votes : {type : Number}
+        }
+        
+    ]
+});
 
 // Mapped Collection Schema (to track dynamic collections)
 const mapCollectionSchema = new mongoose.Schema({
@@ -112,6 +154,7 @@ const mapCollectionSchema = new mongoose.Schema({
 // Mongoose Models
 const MapCollection = mongoose.model("MappedCollection", mapCollectionSchema);
 const User = mongoose.model("User", userSchema);
+const  Election=mongoose.model("Election", electionSchema);
 
 // Export Models & Functions
-module.exports = { MapCollection, User, createDynamicCollection };
+module.exports = { MapCollection, User,Election ,createDynamicCollection };

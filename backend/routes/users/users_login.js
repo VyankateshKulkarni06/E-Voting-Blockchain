@@ -1,5 +1,5 @@
 const router=require('express').Router();
-const {mapCollection,User}=require("../../../db/Admin/schema");
+const {mapCollection,User}=require("../../models/schema");
 const UserVerification=require("../../middlewares/login_middleware");
 const secret=require("../../middlewares/secret");
 const  bcrypt = require("bcrypt");

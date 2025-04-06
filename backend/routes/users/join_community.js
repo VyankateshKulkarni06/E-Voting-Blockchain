@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const mongoose = require("mongoose");
 const router = require("express").Router();
-const { MapCollection ,User} = require("../../../db/Admin/schema");
+const { MapCollection ,User} = require("../../models/schema");
 const userVerification = require("../../middlewares/login_middleware");
 
 
