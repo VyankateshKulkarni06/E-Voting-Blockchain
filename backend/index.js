@@ -1,5 +1,6 @@
 const express=require("express");
 
+
 const app=express();
 const login=require("../backend/routes/users/users_login");
 const CommunityCreation=require("../backend/routes/admin/create_community");
@@ -10,8 +11,11 @@ const createElection=require("./routes/admin/create_election");
 const activeElection=require("./routes/users/active_election");
 const pastElections=require("./routes/users/past_election");
 
+const election_Status_check=require("./jobs/electionsCheck");
+
 // console.log(admin.name);
 app.use(express.json());
+election_Status_check();
 app.use("/user", login);
 app.use("/admin/createCommunity",CommunityCreation);
 app.use("/join_community",joinCommunity);

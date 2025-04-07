@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 
 // Connect to MongoDB
-mongoose.connect("mongodb://localhost:27017/Voting", {
+mongoose.connect("mongodb+srv://kulkarnivyankatesh06:OyiXF7FAg33WjRhV@cluster0.mg0zdwl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/Voting", {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
