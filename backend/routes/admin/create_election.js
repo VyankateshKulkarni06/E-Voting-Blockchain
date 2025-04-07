@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {Election,MapCollection,User} = require("../../models/schema");
+const {Election,MapCollection} = require("../../models/schema");
 const userVerification=require("../../middlewares/login_middleware");
 const mongoose=require("mongoose");
 router.post("/",userVerification,async(req,res)=>{
