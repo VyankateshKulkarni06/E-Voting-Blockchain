@@ -1,8 +1,8 @@
 const router = require('express').Router();
 const {Election,MapCollection,User} = require("../../models/schema");
 const userVerification=require("../../middlewares/login_middleware");
-
-router.post("/test",userVerification,async(req,res)=>{
+const mongoose=require("mongoose");
+router.post("/",userVerification,async(req,res)=>{
     try{
         const {
         electionName,
@@ -36,9 +36,11 @@ router.post("/test",userVerification,async(req,res)=>{
             applicableFields.forEach(({ field, value }) => {
             query[field] = value;
         });
+        console.log(query);
 
-        const voters=await collection.find(query).toArray();
-        const cost_elections=voters.length*0.1;
+        const voters = await collection.find(query, { projection: { _id: 1 } }).toArray();
+
+        const cost_elections=voters.length*0.01;
 
 
         const savedElection = await newElection.save();
