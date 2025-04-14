@@ -1,15 +1,37 @@
-
 const router = require("express").Router();
-const {User} = require("../../models/schema");
+const { User, MapCollection } = require("../../models/schema");
 const userVerification = require("../../middlewares/login_middleware");
 
-router.get("/",userVerification,async(req,res)=>{
-    const user_id=req.user.id;
-    const get_User=await User.findOne({_id:user_id});
-    console.log(get_User);
-    const communities=get_User.communities;
-    console.log(communities);
-    return res.json(communities);
+router.get("/", userVerification, async (req, res) => {
+    try {
+        const user_id = req.user.id;
+        const user = await User.findById(user_id);
+        const adminCommunities = user.communities.admin;
+        const userCommunities = user.communities.user;
+
+        const admincollectionNames = [];
+
+        for (const admin of adminCommunities) {
+            const mapped = await MapCollection.findOne({ key: admin.community_key });
+            if (mapped) {
+                admincollectionNames.push(mapped.collectionName);
+            }
+        }
+
+        const usercollectionNames = [];
+
+        for (const user of userCommunities) {
+            const mapped = await MapCollection.findOne({ key: user.community_key });
+            if (mapped) {
+                usercollectionNames.push(mapped.collectionName);
+            }
+        }
+
+        return res.json({ admin:admincollectionNames, user:userCommunities }); // ✅ Send just the names
+    } catch (err) {
+        console.error("Error in /communities route:", err);
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
 });
 
-module.exports=router;
+module.exports = router;

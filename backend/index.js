@@ -16,7 +16,12 @@ const pastElections=require("./routes/users/past_election");
 const election_Status_check=require("./jobs/electionsCheck");
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Include OPTIONS
+    allowedHeaders: ["Content-Type", "token"], // Allow custom headers like 'token'
+    optionsSuccessStatus: 200,
+  }));
 election_Status_check();
 app.use("/user", login);
 app.use("/admin/createCommunity",CommunityCreation);
