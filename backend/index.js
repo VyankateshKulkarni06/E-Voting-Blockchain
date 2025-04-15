@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(cors({
     origin: "http://localhost:5173",
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "token"], 
+    allowedHeaders: ["Content-Type", "token", "key"],
     optionsSuccessStatus: 200,
   }));
 election_Status_check();

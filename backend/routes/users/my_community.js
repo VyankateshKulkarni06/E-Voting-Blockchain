@@ -14,7 +14,10 @@ router.get("/", userVerification, async (req, res) => {
         for (const admin of adminCommunities) {
             const mapped = await MapCollection.findOne({ key: admin.community_key });
             if (mapped) {
-                admincollectionNames.push(mapped.collectionName);
+                admincollectionNames.push({
+                    collectionName: mapped.collectionName,
+                    key: mapped.key
+                });
             }
         }
 
@@ -23,7 +26,10 @@ router.get("/", userVerification, async (req, res) => {
         for (const user of userCommunities) {
             const mapped = await MapCollection.findOne({ key: user.community_key });
             if (mapped) {
-                usercollectionNames.push(mapped.collectionName);
+                usercollectionNames.push({
+                    collectionName: mapped.collectionName,
+                    key: mapped.key
+                });
             }
         }
 
