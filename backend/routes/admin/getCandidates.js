@@ -27,7 +27,7 @@ router.post("/", userVerification, async (req, res) => {
             })
         );
 
-        return res.json({ candidates: enrichedCandidates });
+        return res.json({ admin:req.user.id, candidates: enrichedCandidates });
     } catch (error) {
         console.error("Error:", error);
         return res.status(500).json({ msg: "Internal Server Error", error: error.message });
