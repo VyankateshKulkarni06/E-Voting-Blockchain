@@ -44,9 +44,13 @@ router.post("/register",async(req,res)=>{
 
 
     await newUser.save();
+    const token = jwt.sign(
+        { id: newUser._id, email: newUser.email, name: newUser.username },
+        secret,
+        { expiresIn: 7200 }
+    );
     
-    
-    return res.json({msg:"user Registered SuccessFully"});
+    return res.json({msg:"user Registered SuccessFully",token});
 });
 
 

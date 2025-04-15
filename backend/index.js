@@ -17,8 +17,8 @@ const election_Status_check=require("./jobs/electionsCheck");
 app.use(express.json());
 app.use(cors({
     origin: "http://localhost:5173",
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Include OPTIONS
-    allowedHeaders: ["Content-Type", "token"], // Allow custom headers like 'token'
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "token"], 
     optionsSuccessStatus: 200,
   }));
 election_Status_check();
