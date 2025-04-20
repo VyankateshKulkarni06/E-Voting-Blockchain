@@ -33,7 +33,7 @@ router.get("/", userVerification, async (req, res) => {
             }
         }
 
-        return res.json({ admin:admincollectionNames, user:userCommunities }); // ✅ Send just the names
+        return res.json({ admin:admincollectionNames, user:usercollectionNames }); // ✅ Send just the names
     } catch (err) {
         console.error("Error in /communities route:", err);
         return res.status(500).json({ error: "Internal Server Error" });
