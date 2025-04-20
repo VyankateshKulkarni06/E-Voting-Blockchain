@@ -8,7 +8,7 @@ const userVerification = require("../../middlewares/login_middleware");
 
 router.post("/test",userVerification, async (req, res) => {
     try {
-        const { CollectionId, password ,data} = req.body;
+        const { CollectionId, password} = req.body;
         const getCollection = await MapCollection.findOne({ key: CollectionId });
         if (!getCollection) {
             return res.status(404).json({ msg: "Community not found" });
