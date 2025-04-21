@@ -14,6 +14,8 @@ const pastElections=require("./routes/users/past_election");
 const getCandidates=require("./routes/admin/getCandidates");
 const election_Status_check=require("./jobs/electionsCheck");
 const getElections=require("./routes/users/getElections");
+const getSelectedCandidates=require("./routes/admin/getSelectedCandidates");
+
 
 app.use(express.json());
 app.use(cors({
@@ -33,6 +35,7 @@ app.use("/activeElection", activeElection);
 app.use("/pastElections", pastElections);
 app.use("/getCandidates",getCandidates);
 app.use("/getElections",getElections);
+app.use("/getSelectedCandidates",getSelectedCandidates);
 
 
 app.listen(5001,()=>{
