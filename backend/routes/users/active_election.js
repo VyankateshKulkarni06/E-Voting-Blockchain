@@ -3,7 +3,7 @@ const userVerification = require("../../middlewares/login_middleware");
 const { User, Election, MapCollection } = require("../../models/schema");
 
 
-router.post("/",userVerification, async (req, res) => {
+router.get("/",userVerification, async (req, res) => {
     try {
         const userId=req.user.id;
     
@@ -29,7 +29,7 @@ router.post("/",userVerification, async (req, res) => {
             })
           );
           
-          res.json(result);
+          res.json(user,result);
           
         
 

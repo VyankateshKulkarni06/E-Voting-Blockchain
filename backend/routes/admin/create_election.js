@@ -8,7 +8,7 @@ router.post("/", userVerification, async (req, res) => {
         const {
             electionName,
             community_key,
-            contractAddress, // Changed from election_address to match frontend payload
+            contractAddress,
             status,
             candidate_id,
             startDate,
