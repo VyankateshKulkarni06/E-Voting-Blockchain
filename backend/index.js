@@ -13,6 +13,7 @@ const activeElection=require("./routes/users/active_election");
 const pastElections=require("./routes/users/past_election");
 const getCandidates=require("./routes/admin/getCandidates");
 const election_Status_check=require("./jobs/electionsCheck");
+const getElections=require("./routes/users/getElections");
 
 app.use(express.json());
 app.use(cors({
@@ -31,6 +32,8 @@ app.use("/createElection", createElection);
 app.use("/activeElection", activeElection);
 app.use("/pastElections", pastElections);
 app.use("/getCandidates",getCandidates);
+app.use("/getElections",getElections);
+
 
 app.listen(5001,()=>{
     console.log('listening on port 5001');
