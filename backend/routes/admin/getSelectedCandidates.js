@@ -32,6 +32,7 @@ router.post("/", userVerification, async (req, res) => {
         }));
 
         return res.json({ 
+            electionData:election,
             admin: req.user.id, 
             candidates: enrichedCandidates 
         });
