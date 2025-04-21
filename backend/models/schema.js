@@ -100,6 +100,10 @@ const electionSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
+    election_address:{
+      type:String,
+      required:true,
+    },
     status: {
       type: String,
       enum: ["upcoming", "active", "over"],
