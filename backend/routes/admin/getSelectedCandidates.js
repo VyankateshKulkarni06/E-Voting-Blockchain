@@ -1,18 +1,18 @@
 const router = require('express').Router();
-const { MapCollection, User } = require("../../models/schema");
+const { MapCollection,Election, User } = require("../../models/schema");
 const mongoose = require("mongoose");
 const userVerification = require("../../middlewares/login_middleware");
 
 router.post("/", userVerification, async (req, res) => {
     try {
-        const electionId = req.body.electionId;
+        const {electionId} = req.body;
 
         if (!mongoose.Types.ObjectId.isValid(electionId)) {
             return res.status(400).json({ msg: "Invalid election ID" });
         }
 
         // Step 1: Find the election document
-        const election = await MapCollection.findById(electionId);
+        const election = await Election.findById(electionId);
         if (!election) {
             return res.status(404).json({ msg: "Election not found" });
         }
