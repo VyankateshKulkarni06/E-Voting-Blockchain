@@ -15,6 +15,7 @@ const getCandidates=require("./routes/admin/getCandidates");
 const election_Status_check=require("./jobs/electionsCheck");
 const getElections=require("./routes/users/getElections");
 const getSelectedCandidates=require("./routes/admin/getSelectedCandidates");
+const userVerifier=require("./routes/blockchain/verifier");
 
 
 app.use(express.json());
@@ -36,7 +37,7 @@ app.use("/pastElections", pastElections);
 app.use("/getCandidates",getCandidates);
 app.use("/getElections",getElections);
 app.use("/getSelectedCandidates",getSelectedCandidates);
-
+app.use("/verifier",userVerifier);
 
 app.listen(5001,()=>{
     console.log('listening on port 5001');
