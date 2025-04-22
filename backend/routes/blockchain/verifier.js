@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const secret = require("../../middlewares/secret"); // Ensure this path is correct
+const router=require("express").Router();
 
 router.post(req,res,()=>{
     // Get the token from the request header
@@ -22,4 +23,4 @@ router.post(req,res,()=>{
     }
 });
 
-module.exports = UserVerification;
+module.exports = router;
