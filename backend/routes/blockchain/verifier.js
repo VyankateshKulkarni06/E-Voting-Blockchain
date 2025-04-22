@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const secret = require("../../middlewares/secret"); // Ensure this path is correct
 const router=require("express").Router();
 
-router.post(req,res,()=>{
+router.post("/",(req,res)=>{
     // Get the token from the request header
     const {token} = req.body;
 
@@ -14,7 +14,7 @@ router.post(req,res,()=>{
     try {
 
         const decoded = jwt.verify(token, secret);
-        res.json({verified:decoded}); // Attach the decoded user information to the request object
+        res.status(200).json({verified:decoded}); // Attach the decoded user information to the request object
        
     } catch (error) {
         // Handle token verification errors
