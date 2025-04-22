@@ -40,7 +40,7 @@ app.use("/getCandidates",getCandidates);
 app.use("/getElections",getElections);
 app.use("/getSelectedCandidates",getSelectedCandidates);
 app.use("/verifier",userVerifier);
-app.use("//publishResults",publishedResults);
+app.use("/publishResults",publishedResults);
 
 app.listen(5001,()=>{
     console.log('listening on port 5001');
