@@ -1,5 +1,6 @@
 // In your backend publishResults handler:
 const router=require("express").Router();
+const {Election} =require("../../models/schema");
 
 router.post('/', async (req, res) => {
     try {

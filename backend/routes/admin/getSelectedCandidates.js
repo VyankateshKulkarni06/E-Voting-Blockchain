@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { MapCollection,Election, User } = require("../../models/schema");
+const { Election, User } = require("../../models/schema");
 const mongoose = require("mongoose");
 const userVerification = require("../../middlewares/login_middleware");
 
