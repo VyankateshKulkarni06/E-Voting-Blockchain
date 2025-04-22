@@ -104,6 +104,13 @@ const electionSchema = new mongoose.Schema({
       type:String,
       required:true,
     },
+    resultsPublished:{
+      type:Boolean,
+      default:false,
+    },
+    publishedAt:{
+      type:Date,
+    },
     status: {
       type: String,
       enum: ["upcoming", "active", "over"],
