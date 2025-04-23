@@ -20,13 +20,13 @@ const publishedResults=require("./routes/admin/getStatusResult");
 
 
 
-app.use(express.json());
 app.use(cors({
-    origin: "https://chainvote-woad.vercel.app/",
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "token", "key"],
-    optionsSuccessStatus: 200,
-  }));
+  origin: "https://chainvote-woad.vercel.app",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "token", "key"],
+  optionsSuccessStatus: 200,
+}));
+app.use(express.json());
 election_Status_check();
 app.use("/user", login);
 app.use("/admin/createCommunity",CommunityCreation);
