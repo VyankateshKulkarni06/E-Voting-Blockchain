@@ -22,7 +22,7 @@ const publishedResults=require("./routes/admin/getStatusResult");
 
 app.use(express.json());
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: "https://chainvote-woad.vercel.app/",
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "token", "key"],
     optionsSuccessStatus: 200,
